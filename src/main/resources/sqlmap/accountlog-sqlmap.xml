@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+ <!DOCTYPE mapper  
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AccountLog">
+	<insert id="insert" parameterType="com.ken.module.accountlog.entity.AccountLog"> 
+	   INSERT INTO fs_account_log(id, customerId, amount, orderId, createTime, type)
+	   VALUES(#{id}, #{customerId}, #{amount}, #{orderId}, #{createTime}, #{type})
+	</insert>
+</mapper>

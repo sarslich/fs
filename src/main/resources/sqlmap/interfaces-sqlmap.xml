@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+ <!DOCTYPE mapper  
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Interfaces">
+	<resultMap id="interfaces" type="com.ken.module.interfaces.entity.Interfaces">
+		<result property="id" column="id" javaType="java.lang.String" />
+		<result property="interfaceName" column="interfaceName" javaType="java.lang.String" />
+		<result property="description" column="description" javaType="java.lang.String" />
+		<result property="busModel" column="busModel" javaType="java.lang.String" />
+		<result property="isUsable" column="isUsable" javaType="java.lang.String" />
+		<result property="parameter" column="parameter" javaType="java.lang.String" />
+		<result property="modifyBy" column="modifyBy" javaType="java.lang.String" />
+		<result property="modifyTime" column="modifyTime" javaType="java.sql.Timestamp" />
+	</resultMap>
+
+	<select id="findInterfaceByName" parameterType="java.lang.String"
+		resultType="com.ken.module.interfaces.entity.Interfaces" resultMap="interfaces">
+		SELECT * FROM fs_interface_info
+		WHERE interfaceName = #{interfaceName} 
+	</select>
+
+</mapper>

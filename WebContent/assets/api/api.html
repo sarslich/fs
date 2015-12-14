@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8">
+    <title>流量管理平台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="../../assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">请登录login.html</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">首页</a></li>
+              <li><a href="#about">关于</a></li>
+              <li><a href="#contact">联系</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">		 
+		<form class="well" name="loginForm" action="#" method="post">
+ 	  		<label></label>
+ 	  		<input type="text" class="span3" placeholder="appkey" name="appkey" value="kenneth">
+ 	  		<!--  
+ 	  		<label></label>
+			<input type="text" class="span3" placeholder="privateKey" name="privateKey" value="123456">
+			-->
+			<label></label>
+			<input type="text" class="span3" placeholder="method" name="method" value="order">  
+			<label></label>
+			<input type="text" class="span3" placeholder="sig" name="sig" value="123456">  
+			<label></label>
+			<input type="text" class="span3" placeholder="v" name="v" value="1">  
+			<label>手机号</label>
+			<input type="text" class="span3" placeholder="phoneNo" name="phoneNo" value="18988794273">  
+			<label>产品编码</label>
+			<input type="text" class="span3" placeholder="productCode" name="productCode" value="">  
+			<label>回调地址</label>
+			<input type="text" class="span3" placeholder="callbackUrl" name="callbackUrl" value="">  			
+			<label></label>
+			<button type="button" class="btn">点击我</button>
+			
+			<label>调用结果</label>
+			<p id="order_result"></p>
+		</form>
+
+		<form class="well" name="loginForm" action="../order" method="post">
+ 	  		<label></label>
+ 	  		<input type="text" class="span3" placeholder="appkey" name="appkey" value="kenneth">
+ 	  		<!--  
+ 	  		<label></label>
+			<input type="text" class="span3" placeholder="privateKey" name="privateKey" value="123456">
+			-->
+			<label></label>
+			<input type="text" class="span3" placeholder="method" name="method" value="order">  
+			<label></label>
+			<input type="text" class="span3" placeholder="sig" name="sig" value="123456">  
+			<label></label>
+			<input type="text" class="span3" placeholder="v" name="v" value="1">  
+			<label>手机号</label>
+			<input type="text" class="span3" placeholder="phoneNo" name="phoneNo" value="18988794273">  
+			<label>产品编码</label>
+			<input type="text" class="span3" placeholder="productCode" name="productCode" value=""> 
+			<label>回调地址</label>
+			<input type="text" class="span3" placeholder="callbackUrl" name="callbackUrl" value=""> 
+			<label></label>
+			<button type="submit" class="sub">点击我2</button>
+			
+			<label>调用结果</label>
+			<p id="order_result"></p>
+		</form>		
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../assets/js/jquery.js"></script>
+
+    <script type="text/javascript">
+         
+        /* 提交结果，执行ajax */
+        function btn(){
+             
+            var $btn = $("button.btn");//获取按钮元素
+            //给按钮绑定点击事件
+            $btn.bind("click",function(){
+                 
+                $.ajax({
+                    type:"post",
+                    url:"../order",//需要用来处理ajax请求的action,excuteAjax为处理的方法名，JsonAction为action名
+                    data:{//设置数据源
+                    	appkey:$("input[name=appkey]").val(),
+                    	privateKey:$("input[name=privateKey]").val(),
+                    	method:$("input[name=method]").val(),
+                    	sig:$("input[name=sig]").val(),
+                        v:$("input[name=v]").val(),
+                        phoneNo:$("input[name=phoneNo]").val(),
+                        productCode:$("input[name=productCode]").val(),
+                        callbackUrl:$("input[name=callbackUrl]").val()//这里不要加","  不然会报错，而且根本不会提示错误地方
+                    },
+                    dataType:"json",//设置需要返回的数据类型
+                    success:function(data){
+                    	//alert(JSON.stringify(data)); 
+                        //var d = eval("("+data+")");//将数据转换成json类型，可以把data用alert()输出出来看看到底是什么样的结构
+                        //得到的d是一个形如{"key":"value","key1":"value1"}的数据类型，然后取值出来
+                        $("#order_result").text(""+JSON.stringify(data)+"");
+                        //$("#order_result").text(""+d+"");
+                        //$("#s_age").text(""+d.age+"");
+                        //$("#s_position").text(""+d.position+"");
+                         
+                    },
+                    error:function(){
+                        alert("系统异常，请稍后重试！");
+                    }//这里不要加","
+                });
+            });
+        }
+     
+        /* 页面加载完成，绑定事件 */
+        $(document).ready(function(){           
+            btn();//点击提交，执行ajax
+        });
+    </script>
+  </body>
+</html>
+

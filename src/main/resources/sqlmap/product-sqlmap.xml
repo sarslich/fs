@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+ <!DOCTYPE mapper  
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Product">
+	<resultMap id="product" type="com.ken.module.product.entity.Product">
+		<result property="id" column="id" javaType="java.lang.String" />
+		<result property="prodName" column="prodName" javaType="java.lang.String" />
+		<result property="prodCode" column="prodCode" javaType="java.lang.String" />
+		<result property="prodDesc" column="prodDesc" javaType="java.lang.String" />
+		<result property="operator" column="operator" javaType="java.lang.String" />
+		<result property="price" column="price" javaType="java.lang.Double" />
+		<result property="status" column="status" javaType="java.lang.String" />
+		<result property="productSize" column="productSize" javaType="java.lang.Integer" />
+		<result property="channelId" column="channelId" javaType="java.lang.String" />
+		<result property="province" column="province" javaType="java.lang.String" />	
+		<result property="createName" column="createName" javaType="java.lang.String" />
+		<result property="createTime" column="createTime" javaType="java.sql.Date" />
+		<result property="updateName" column="updateName" javaType="java.lang.String" />
+		<result property="updateTime" column="updateTime" javaType="java.sql.Date" />
+	</resultMap>
+
+	<select id="findProduct" parameterType="java.lang.String"
+		resultType="com.ken.module.product.entity.Product" resultMap="product">
+		SELECT * FROM fs_product
+		WHERE prodCode = #{productCode}  
+		AND   status = '0'
+	</select>
+
+</mapper>

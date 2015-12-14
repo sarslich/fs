@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<beans:description>SpringSecurity安全配置</beans:description>
+
+	<global-method-security pre-post-annotations="enabled"
+		secured-annotations="enabled" />
+
+	<http pattern="/" security="none" />
+	<http pattern="*.css" security="none" />
+	<http pattern="**/images/**" security="none" />
+	<http pattern="**/js/**" security="none" />
+	<http pattern="**/uploads/**" security="none" />
+	<http pattern="/login.html" security="none" />
+	<http pattern="/assets/loginauth" security="none" />
+	<http pattern="/password/**" security="none" />
+	<http pattern="/captcha-code-image" security="none"/>
+	
+	<http auto-config="false" access-decision-manager-ref="accessDecisionManager"   entry-point-ref="authenticationEntryPoint">
+		<!-- 对web访问授权，可扩展为由数据库管理、可扩展实现以功能按钮或菜单模块的权限管理 -->
+		
+		<access-denied-handler ref="accessDeniedHandler" />
+
+		<logout invalidate-session="true" logout-success-url="/assets/login"
+			logout-url="/logout" />
+
+		<!-- session并发测试未做！！！ -->
+		<!-- 
+		<session-management invalid-session-url="/assets/login.do">
+			<concurrency-control max-sessions="1"
+				expired-url="/assets/login.do" />
+		</session-management>
+		 -->
+		 
+		<remember-me key="9kTtPD7Q-u4R1-HSdz-GquD-ChqO4QLxImYD"
+			services-ref="rememberMeServices" />
+	 
+		 <custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>
+
+		 <!-- 自定义登陆filter，带验证码 -->
+ 
+		 <custom-filter ref="captchaAuthenticaionFilter" position="FORM_LOGIN_FILTER"/>
+ 
+		 		   
+	</http>
+
+ 	<beans:bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">  
+     	<beans:property name="accessDecisionManager" ref="accessDecisionManager" />  
+     	<beans:property name="authenticationManager" ref="authenticationManager" />  
+     	<beans:property name="securityMetadataSource" ref="securityMetadataSource" />  
+ 	</beans:bean>  
+   
+	<beans:bean id="securityMetadataSource"  
+    	class="com.ken.core.web.security.metedatasource.URLFilterInvocationSecurityMetadataSource"/>  
+
+	<beans:bean id="sysResourceRepository"
+		class="com.ken.module.auth.repository.AuthoritiesResourcesRepositoryImpl" />
+
+    <!-- 自定义带验证码 登陆filter，-->
+	<beans:bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:property name="loginFormUrl" value="/assets/login.html" />
+	</beans:bean>
+
+
+	<beans:bean id="captchaAuthenticaionFilter" class="com.ken.core.web.security.auth.CaptchaAuthenticationFilter">
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
+		<beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
+
+		<beans:property name="filterProcessesUrl" value="/assets/login" />
+		<beans:property name="usernameParameter"  value="username" />
+		<beans:property name="passwordParameter"  value="password" />	
+		<beans:property name="captchaParameter"  value="captcha" />				
+	</beans:bean>
+
+	<beans:bean id="authenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/assets/index"/>
+	</beans:bean>
+	<beans:bean id="authenticationFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<beans:property name="defaultFailureUrl" value="/assets/loginauth" />
+	</beans:bean>
+	
+	
+	<!-- 定义权限异常处理 -->
+	<beans:bean id="accessDeniedHandler"
+		class="com.ken.core.web.security.handler.RequestAccessDeniedHandler">
+		<beans:property name="errorPage" value="/403.ftl"></beans:property>
+	</beans:bean>
+
+	<!--定义决策管理器 -->
+	<!-- AffirmativeBased表示只要有一个Voter通过权限要求，就可以访问 -->
+	<!-- 是否允许所有的投票者弃权,如果为false，表示如果所有的投票者弃权，就禁止访问 -->
+	<!-- RoleVoter默认角色名称都要以ROLE_开头，否则不会被计入权限控制，如果要修改前缀，可以通过对rolePrefix属性进行修改 -->
+	<beans:bean id="accessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="allowIfAllAbstainDecisions"
+			value="false" />
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+				<beans:bean
+					class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 定义userDetailsService -->
+	<beans:bean id="userDetailsService"
+		class="com.ken.core.security.auth.service.SecurityUserService" />
+
+	<!-- 定义MD5加密和salt -->
+	<beans:bean
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"
+		id="passwordEncode" />
+	<beans:bean id="saltSource"
+		class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+		<beans:property name="userPropertyToUse" value="username" />
+	</beans:bean>
+
+	<!-- 数据库认证 -->
+	<beans:bean id="daoAuthenticationProvider"
+		class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="userDetailsService" />
+		<beans:property name="hideUserNotFoundExceptions"
+			value="false" />
+		<beans:property name="passwordEncoder" ref="passwordEncode" />
+		<beans:property name="saltSource" ref="saltSource" />
+		<beans:property name="userCache" ref="userCache" />
+		<beans:property name="messageSource" ref="messageSource" />
+	</beans:bean>
+	<!-- 定义Spring Security认证管理器 -->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="daoAuthenticationProvider">
+		</authentication-provider>
+	</authentication-manager>
+
+
+	<beans:bean id="rememberMeServices"
+		class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<beans:property name="userDetailsService" ref="userDetailsService" />
+		<!-- cookie中的键值, 防止保存到客户端的cookie中的加密串被恶意篡改 -->
+		<beans:property name="key"
+			value="9kTtPD7Q-u4R1-HSdz-GquD-ChqO4QLxImYD" />
+		<!-- cookie有效时间, 单位为秒, 这里设定为10分钟内不用再登陆 -->
+		<beans:property name="tokenValiditySeconds" value="600" />
+	</beans:bean>
+
+</beans:beans>

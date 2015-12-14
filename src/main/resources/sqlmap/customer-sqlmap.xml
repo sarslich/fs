@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+ <!DOCTYPE mapper  
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Customer">
+	<resultMap id="customer" type="com.ken.module.customer.entity.Customer">
+		<result property="id" column="id" javaType="java.lang.String" />
+		<result property="appKey" column="appKey" javaType="java.lang.String" />
+		<result property="securityKey" column="securityKey" javaType="java.lang.String" />
+		<result property="customerName" column="customerName" javaType="java.lang.String" />
+		<result property="linkMan" column="linkMan" javaType="java.lang.String" />
+		<result property="contactEmail" column="contactEmail" javaType="java.lang.String" />
+		<result property="contactNumber" column="contactNumber" javaType="java.lang.String" />
+		<result property="status" column="status" javaType="java.lang.String" />
+		<result property="amount" column="amount" javaType="java.lang.Double" />
+		<result property="creditAmount" column="creditAmount" javaType="java.lang.Double" />
+		<result property="warnAmount" column="warnAmount" javaType="java.lang.Double" />
+		<result property="gnCmccDiscount" column="gnCmccDiscount" javaType="java.lang.Double" />  
+		<result property="gnTeleDiscount" column="gnTeleDiscount" javaType="java.lang.Double" />
+		<result property="gnUnicomDiscount" column="gnUnicomDiscount" javaType="java.lang.Double" />
+		<result property="snCmccDiscount" column="snCmccDiscount" javaType="java.lang.Double" />  
+		<result property="snTeleDiscount" column="snTeleDiscount" javaType="java.lang.Double" />
+		<result property="snUnicomDiscount" column="snUnicomDiscount" javaType="java.lang.Double" />
+		<result property="delFlag" column="delFlag"   javaType="java.lang.String"  />		
+	</resultMap>
+
+	<select id="findValidataCustomerByAppkey" parameterType="java.lang.String"
+		resultType="com.ken.module.customer.entity.Customer" resultMap="customer">
+		SELECT * FROM fs_customer_info
+		WHERE appKey = #{appKey}
+		AND   delFlag = 0
+		AND   status = 1		
+	</select>
+
+	<update id="updateAmount" parameterType="java.util.Map" >
+		UPDATE fs_customer_info   SET  amount=(t.amount+#{amount})
+        WHERE  customerId=#{customerId}
+	</update>
+
+</mapper>

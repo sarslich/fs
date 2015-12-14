@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+ <!DOCTYPE mapper  
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PhoneHead">
+	<resultMap id="phoneHead" type="com.ken.module.phone.entity.PhoneHead">
+		<result property="phoneSeg" column="phoneSeg" javaType="java.lang.String" />
+		<result property="province" column="province" javaType="java.lang.String" />
+		<result property="provinceName" column="provinceName" javaType="java.lang.String" />
+		<result property="operator" column="operator" javaType="java.lang.String" />
+		<result property="modifyBy" column="modifyBy" javaType="java.lang.String" />
+		<result property="modifyTime" column="modifyTime" javaType="java.sql.Timestamp" />
+	</resultMap>
+
+	<select id="findTempFist" parameterType="java.lang.String"
+		resultType="com.ken.module.phone.entity.PhoneHead" resultMap="phoneHead">
+		SELECT * FROM fs_phone_head
+		WHERE phoneSeg = #{phoneNo}  
+	</select>
+
+</mapper>

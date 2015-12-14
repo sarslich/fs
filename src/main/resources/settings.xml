@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<!-- 数据库驱动 -->
+	<entry key="db.driver">com.mysql.jdbc.Driver</entry>
+	<!-- 数据库链接地址 -->
+	<entry key="db.url">jdbc:mysql://127.0.0.1:3306/fsDB?characterEncoding=UTF-8&amp; autoReconnect=true&amp; failOverReadOnly=false&amp; zeroDateTimeBehavior=convertToNull</entry>
+	<!-- 数据库用户名 -->
+	<entry key="db.username">ken</entry>
+	<!-- 数据库用户密码 -->
+	<entry key="db.password">123456</entry>
+	<!-- Spring Security User Sql Name -->
+	<entry key="security.userSqlName">Users.getUserByUserName</entry>
+	<entry key="security.authoritesSqlName">Authorities.getAuthoritiesByUserName</entry>
+	<entry key="security.sysResourceSqlName">AuthoritiesResources.getRequestUrlResources</entry>
+	<entry key="RES_KEY">resource</entry>
+	<entry key="AUTH_KEY">authority</entry>
+	
+	<!-- Reids Config-->
+	<entry key="redis.host">127.0.0.1</entry>
+	<entry key="redis.port">6379</entry>
+	<entry key="redis.password">vas123</entry>
+	<!-- Redis Cache -->
+	<entry key="redis.cacheName">orderCache</entry>
+</properties>

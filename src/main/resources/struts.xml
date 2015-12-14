@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.action.extension" value="," />
+    <constant name="struts.handle.exception" value="false"/>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
+    <!-- 覆盖Freemarker管理类 -->
+	<constant name="struts.freemarker.manager.classname" value="com.ken.core.view.support.GenericFreemarkerManager" />
+	<!-- 覆盖静态资源加载类
+	<constant name="struts.staticContentLoader" value="coo.struts.config.GenericStaticContentLoader" />
+	 -->
+	<package name="default" namespace="/" extends="struts-default,json-default">
+		<!-- 设置默认的跳转类型为FreeMarker -->
+		<result-types>
+			<result-type name="freemarker"
+				class="org.apache.struts2.views.freemarker.FreemarkerResult"
+				default="true" />
+		</result-types>
+		<!-- 定义一个拦截器 -->    
+		<interceptors>    
+			<interceptor name="apiInterceptor"    
+	               class="com.ken.module.api.interceptor.ApiInterceptor">    
+			</interceptor>    
+			<!-- 拦截器栈 -->    
+
+			<interceptor-stack name="mydefault">    
+	            <interceptor-ref name="apiInterceptor" />    
+	          	<interceptor-ref name="defaultStack" />
+	        </interceptor-stack>
+
+		</interceptors> 
+ <!-- 		
+		 <default-interceptor-ref name="mydefault">
+         </default-interceptor-ref>
+-->  		
+	</package>
+
+
+</struts>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeHandlers>
+		<typeHandler 
+			handler="com.ken.core.util.ibatis.CustomHandler" />
+	</typeHandlers>
+
+	<mappers>
+		<mapper resource="sqlmap/users-sqlmap.xml" />
+		<mapper resource="sqlmap/authorities-sqlmap.xml" />
+		<mapper resource="sqlmap/sysResources-sqlmap.xml" />
+		<mapper resource="sqlmap/customer-sqlmap.xml" />		
+		<mapper resource="sqlmap/interfaces-sqlmap.xml" />			
+		<mapper resource="sqlmap/custinterfaces-sqlmap.xml" />			
+		<mapper resource="sqlmap/phonehead-sqlmap.xml" />
+		<mapper resource="sqlmap/product-sqlmap.xml" />		
+		<mapper resource="sqlmap/order-sqlmap.xml" />	
+		<mapper resource="sqlmap/accountlog-sqlmap.xml" />			
+	</mappers>
+</configuration> 

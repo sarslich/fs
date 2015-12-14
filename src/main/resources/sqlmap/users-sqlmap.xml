@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+ <!DOCTYPE mapper  
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Users">
+
+	<resultMap id="users" type="com.ken.module.users.entity.Users">
+		<result property="id" column="id" javaType="java.lang.String" />
+		<result property="userName" column="username" javaType="java.lang.String" />
+		<result property="password" column="password" javaType="java.lang.String" />
+		<result property="enabled" column="enabled"   javaType="java.lang.String" typeHandler="com.ken.core.util.ibatis.CustomHandler" />
+	</resultMap>
+	
+	<select id="getUserByUserName" parameterType="java.lang.String"
+		resultType="com.ken.module.users.entity.Users" resultMap="users">
+		SELECT id, username,password, enabled FROM fs_user
+		WHERE username = #{userName}
+	</select>
+
+</mapper>

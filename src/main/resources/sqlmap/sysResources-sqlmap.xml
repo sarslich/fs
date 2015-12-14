@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+ <!DOCTYPE mapper  
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AuthoritiesResources">
+	<resultMap id="auth_list" type="java.util.Map">		 
+		<result property="authority" column="authority" javaType="java.lang.String" />
+		<result property="resource" column="resource" javaType="java.lang.String" />
+	</resultMap>
+	<!-- 
+	<select id="getMethodResources" 
+		resultType="java.util.Map" resultMap="auth_list">
+		SELECT  auth.authority,resource.resource_content  
+		FROM authorities auth, demo_resources resource,  resource_authority ra
+		WHERE auth.id = ra.aid
+		AND   resource.id = ra.rid
+		AND   resource_type = 'method'
+	</select>
+	-->
+	<select id="getRequestUrlResources" 
+		resultType="java.util.Map" resultMap="auth_list">
+		SELECT  auth.authority,resource.resource 
+		FROM fs_authorities auth, fs_resources resource,  fs_authority_resources ra
+		WHERE auth.id = ra.authorityid
+		AND   resource.id = ra.resourceid
+		AND   type = 'requesturl'
+	</select>
+</mapper>

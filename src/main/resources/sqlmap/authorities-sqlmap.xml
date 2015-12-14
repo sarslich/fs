@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+ <!DOCTYPE mapper  
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Authorities">
+
+	<resultMap id="auth_list" type="com.ken.core.security.entity.Authorities">
+		<result property="id" column="id" javaType="java.lang.String" />
+		<result property="authority" column="authority" javaType="java.lang.String" />
+		<result property="userId" column="userid" javaType="java.lang.String" />
+	</resultMap>
+	
+	<select id="getAuthoritiesByUserName" parameterType="java.lang.String"
+		resultType="com.ken.core.security.entity.Authorities" resultMap="auth_list">
+		SELECT auth.id, auth.authority,auth.userid  FROM fs_authorities auth,fs_user u
+		WHERE u.username = #{userName}
+		AND   u.id = auth.userid
+	</select>
+	
+</mapper>
